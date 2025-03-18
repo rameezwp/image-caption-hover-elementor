@@ -18,7 +18,7 @@ class Widget extends Widget_Base {
     }
 
     public function get_icon() {
-        return 'eicon-image';
+        return 'eicon-featured-image';
     }
 
     public function get_categories() {
@@ -56,6 +56,35 @@ class Widget extends Widget_Base {
             ]
         );
 
+        $this->add_responsive_control(
+            'box_height',
+            [
+                'label' => esc_html__('Box Height', 'image-caption-hover-elementor'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', '%'],
+                'range' => [
+                    'px' => [
+                        'min' => 50,
+                        'max' => 1000,
+                    ],
+                    '%' => [
+                        'min' => 10,
+                        'max' => 100,
+                    ],
+                ],
+                'default' => [
+                    'unit' => 'px',
+                    'size' => 300,
+                ],
+                'condition' => [
+                    'template_style' => ['scroll-image-bottom-caption', 'scroll-image-top-caption'],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .ich-scroll-box' => 'height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
         $this->add_control(
             'image',
             [
@@ -64,6 +93,9 @@ class Widget extends Widget_Base {
                 'default' => [
                     'url' => \Elementor\Utils::get_placeholder_image_src(),
                 ],
+                'selectors' => [
+                    '{{WRAPPER}} .ich-scroll-box' => 'background-image: url({{URL}});',
+                ],                
             ]
         );
 
@@ -150,6 +182,7 @@ class Widget extends Widget_Base {
                 'label' => esc_html__('Image Size', 'image-caption-hover-elementor'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => $this->get_image_sizes(),
+                'default' => 'large'
             ]
         );
 
@@ -190,7 +223,7 @@ class Widget extends Widget_Base {
                     'image_dimension' => 'custom',
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .wcp-caption-image' => 'width: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} .image-caption-box' => 'width: {{SIZE}}{{UNIT}};',
                 ],
             ]
         );
@@ -235,6 +268,18 @@ class Widget extends Widget_Base {
             ]
         );
 
+        $this->add_control(
+            'caption_color',
+            [
+                'label' => esc_html__('Caption Color', 'classic-addons-elementor'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'default' => '#FFFFFF',
+                'selectors' => [
+                    '{{WRAPPER}} .wcp-caption-plugin .image-caption-box .as-tble *' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
@@ -271,139 +316,134 @@ class Widget extends Widget_Base {
 
     function get_template_styles(){
         return array(
-            'caption-slide-up' => esc_html__('Caption slide Up', 'image-caption-hover-elementor'),
-            'slide-left-to-right' => esc_html__('slide-left-to-right', 'image-caption-hover-elementor'),
-            'slide-right-to-left' => esc_html__('slide-right-to-left', 'image-caption-hover-elementor'),
-            'slide-top-to-bottom' => esc_html__('slide-top-to-bottom', 'image-caption-hover-elementor'),
-            'slide-bottom-to-top' => esc_html__('slide-bottom-to-top', 'image-caption-hover-elementor'),
-            'image-flip-up' => esc_html__('image-flip-up', 'image-caption-hover-elementor'),
-            'image-flip-down' => esc_html__('image-flip-down', 'image-caption-hover-elementor'),
-            'image-flip-right' => esc_html__('image-flip-right', 'image-caption-hover-elementor'),
-            'image-flip-left' => esc_html__('image-flip-left', 'image-caption-hover-elementor'),
-            'rotate-image-down' => esc_html__('rotate-image-down', 'image-caption-hover-elementor'),
-            'image-turn-around' => esc_html__('image-turn-around', 'image-caption-hover-elementor'),
-            'zoom-and-pan' => esc_html__('zoom-and-pan', 'image-caption-hover-elementor'),
-            'tilt-image' => esc_html__('tilt-image', 'image-caption-hover-elementor'),
-            'morph' => esc_html__('morph', 'image-caption-hover-elementor'),
-            'move-image-right' => esc_html__('move-image-right', 'image-caption-hover-elementor'),
-            'move-image-left' => esc_html__('move-image-left', 'image-caption-hover-elementor'),
-            'move-image-top' => esc_html__('move-image-top', 'image-caption-hover-elementor'),
-            'move-image-bottom' => esc_html__('move-image-bottom', 'image-caption-hover-elementor'),
-            'image-squeez-right' => esc_html__('image-squeez-right', 'image-caption-hover-elementor'),
-            'image-squeez-left' => esc_html__('image-squeez-left', 'image-caption-hover-elementor'),
-            'image-squeez-top' => esc_html__('image-squeez-top', 'image-caption-hover-elementor'),
-            'image-squeez-bottom' => esc_html__('image-squeez-bottom', 'image-caption-hover-elementor'),
+            'caption-slide-up' => esc_html__('Caption Slide Up', 'image-caption-hover-elementor'),
+            'slide-left-to-right' => esc_html__('Slide Left To Right', 'image-caption-hover-elementor'),
+            'slide-right-to-left' => esc_html__('Slide Right To Left', 'image-caption-hover-elementor'),
+            'slide-top-to-bottom' => esc_html__('Slide Top To Bottom', 'image-caption-hover-elementor'),
+            'slide-bottom-to-top' => esc_html__('Slide Bottom To Top', 'image-caption-hover-elementor'),
+            'image-flip-up' => esc_html__('Image Flip Up', 'image-caption-hover-elementor'),
+            'image-flip-down' => esc_html__('Image Flip Down', 'image-caption-hover-elementor'),
+            'image-flip-right' => esc_html__('Image Flip Right', 'image-caption-hover-elementor'),
+            'image-flip-left' => esc_html__('Image Flip Left', 'image-caption-hover-elementor'),
+            'rotate-image-down' => esc_html__('Rotate Image Down', 'image-caption-hover-elementor'),
+            'image-turn-around' => esc_html__('Image Turn Around', 'image-caption-hover-elementor'),
+            'zoom-and-pan' => esc_html__('Zoom And Pan', 'image-caption-hover-elementor'),
+            'tilt-image' => esc_html__('Tilt Image', 'image-caption-hover-elementor'),
+            'morph' => esc_html__('Morph', 'image-caption-hover-elementor'),
+            'move-image-right' => esc_html__('Move Image Right', 'image-caption-hover-elementor'),
+            'move-image-left' => esc_html__('Move Image Left', 'image-caption-hover-elementor'),
+            'move-image-top' => esc_html__('Move Image Top', 'image-caption-hover-elementor'),
+            'move-image-bottom' => esc_html__('Move Image Bottom', 'image-caption-hover-elementor'),
+            'image-squeez-right' => esc_html__('Image Squeez Right', 'image-caption-hover-elementor'),
+            'image-squeez-left' => esc_html__('Image Squeez Left', 'image-caption-hover-elementor'),
+            'image-squeez-top' => esc_html__('Image Squeez Top', 'image-caption-hover-elementor'),
+            'image-squeez-bottom' => esc_html__('Image Squeez Bottom', 'image-caption-hover-elementor'),
+            'fall-down-caption' => esc_html__('Fall Down Caption', 'image-caption-hover-elementor'),
+            'fall-down-image' => esc_html__('Fall Down Image', 'image-caption-hover-elementor'),
+            'swap-caption' => esc_html__('Swap Caption', 'image-caption-hover-elementor'),
+            'swap-image' => esc_html__('Swap Image', 'image-caption-hover-elementor'),
+            'puffin-caption' => esc_html__('Puffin Caption', 'image-caption-hover-elementor'),
+            'puffin-image' => esc_html__('Puffin Image', 'image-caption-hover-elementor'),
+            'puffout-caption' => esc_html__('Puffout Caption', 'image-caption-hover-elementor'),
+            'puffout-image' => esc_html__('Puffout Image', 'image-caption-hover-elementor'),
+            'opendoordown-caption' => esc_html__('Opendoordown Caption', 'image-caption-hover-elementor'),
+            'opendoordown-image' => esc_html__('Opendoordown Image', 'image-caption-hover-elementor'),
+            'opendoorup-caption' => esc_html__('Opendoorup Caption', 'image-caption-hover-elementor'),
+            'opendoorup-image' => esc_html__('Opendoorup Image', 'image-caption-hover-elementor'),
+            'opendoorright-caption' => esc_html__('Opendoorright Caption', 'image-caption-hover-elementor'),
+            'opendoorright-image' => esc_html__('Opendoorright Image', 'image-caption-hover-elementor'),
+            'opendoorleft-caption' => esc_html__('Opendoorleft Caption', 'image-caption-hover-elementor'),
+            'opendoorleft-image' => esc_html__('Opendoorleft Image', 'image-caption-hover-elementor'),
+            'rotatedown-caption' => esc_html__('Rotatedown Caption', 'image-caption-hover-elementor'),
+            'rotatedown-image' => esc_html__('Rotatedown Image', 'image-caption-hover-elementor'),
+            'rotateup-caption' => esc_html__('Rotateup Caption', 'image-caption-hover-elementor'),
+            'rotateup-image' => esc_html__('Rotateup Image', 'image-caption-hover-elementor'),
+            'rotateright-caption' => esc_html__('Rotateright Caption', 'image-caption-hover-elementor'),
+            'rotateright-image' => esc_html__('Rotateright Image', 'image-caption-hover-elementor'),
+            'rotateleft-caption' => esc_html__('Rotateleft Caption', 'image-caption-hover-elementor'),
+            'rotateleft-image' => esc_html__('Rotateleft Image', 'image-caption-hover-elementor'),
+            'spaceoutup-caption' => esc_html__('Spaceoutup Caption', 'image-caption-hover-elementor'),
+            'spaceoutup-image' => esc_html__('Spaceoutup Image', 'image-caption-hover-elementor'),
+            'spaceoutdown-caption' => esc_html__('Spaceoutdown Caption', 'image-caption-hover-elementor'),
+            'spaceoutdown-image' => esc_html__('Spaceoutdown Image', 'image-caption-hover-elementor'),
+            'spaceoutright-caption' => esc_html__('Spaceoutright Caption', 'image-caption-hover-elementor'),
+            'spaceoutright-image' => esc_html__('Spaceoutright Image', 'image-caption-hover-elementor'),
+            'spaceoutleft-caption' => esc_html__('Spaceoutleft Caption', 'image-caption-hover-elementor'),
+            'spaceoutleft-image' => esc_html__('Spaceoutleft Image', 'image-caption-hover-elementor'),
+            'foolish-caption' => esc_html__('Foolish Caption', 'image-caption-hover-elementor'),
+            'foolish-image' => esc_html__('Foolish Image', 'image-caption-hover-elementor'),
+            'tinright-caption' => esc_html__('Tinright Caption', 'image-caption-hover-elementor'),
+            'tinright-image' => esc_html__('Tinright Image', 'image-caption-hover-elementor'),
+            'tinleft-caption' => esc_html__('Tinleft Caption', 'image-caption-hover-elementor'),
+            'tinleft-image' => esc_html__('Tinleft Image', 'image-caption-hover-elementor'),
+            'tinup-caption' => esc_html__('Tinup Caption', 'image-caption-hover-elementor'),
+            'tinup-image' => esc_html__('Tinup Image', 'image-caption-hover-elementor'),
+            'tindown-caption' => esc_html__('Tindown Caption', 'image-caption-hover-elementor'),
+            'tindown-image' => esc_html__('Tindown Image', 'image-caption-hover-elementor'),
+            'simple-fade' => esc_html__('Simple Fade', 'image-caption-hover-elementor'),
+            'zoom-in' => esc_html__('Zoom In', 'image-caption-hover-elementor'),
+            'zoom-out' => esc_html__('Zoom Out', 'image-caption-hover-elementor'),
+            'zoom-in-twist' => esc_html__('Zoom In Twist', 'image-caption-hover-elementor'),
+            'zoom-out-twist' => esc_html__('Zoom Out Twist', 'image-caption-hover-elementor'),
+            'zoom-caption-in-image-out' => esc_html__('Zoom Caption In Image Out', 'image-caption-hover-elementor'),
+            'zoom-caption-out-image-in' => esc_html__('Zoom Caption Out Image In', 'image-caption-hover-elementor'),
+            'zoom-image-out-caption-twist' => esc_html__('Zoom Image Out Caption Twist', 'image-caption-hover-elementor'),
+            'zoom-image-in-caption-twist' => esc_html__('Zoom Image In Caption Twist', 'image-caption-hover-elementor'),
+            'flip-image-vertical' => esc_html__('Flip Image Vertical', 'image-caption-hover-elementor'),
+            'flip-image-horizontal' => esc_html__('Flip Image Horizontal', 'image-caption-hover-elementor'),
+            'flip-image-vertical-back' => esc_html__('Flip Image Vertical Back', 'image-caption-hover-elementor'),
+            'flip-image-horizontal-back' => esc_html__('Flip Image Horizontal Back', 'image-caption-hover-elementor'),
+            'page-turn-from-top' => esc_html__('Page Turn From Top', 'image-caption-hover-elementor'),
+            'page-turn-from-bottom' => esc_html__('Page Turn From Bottom', 'image-caption-hover-elementor'),
+            'page-turn-from-left' => esc_html__('Page Turn From Left', 'image-caption-hover-elementor'),
+            'page-turn-from-right' => esc_html__('Page Turn From Right', 'image-caption-hover-elementor'),
+            'no-effect' => esc_html__('No Effect', 'image-caption-hover-elementor'),
+            'no-hover-still-caption' => esc_html__('No Hover Still Caption', 'image-caption-hover-elementor'),
+            'visible-caption-blur-image' => esc_html__('Visible Caption Blur Image', 'image-caption-hover-elementor'),
+            'visible-caption-grayscale-image' => esc_html__('Visible Caption Grayscale Image', 'image-caption-hover-elementor'),
 
-            'fall-down-caption' => esc_html__('fall-down-caption', 'image-caption-hover-elementor'),
-            'fall-down-image' => esc_html__('fall-down-image', 'image-caption-hover-elementor'),
-            'swap-caption' => esc_html__('swap-caption', 'image-caption-hover-elementor'),
-            'swap-image' => esc_html__('swap-image', 'image-caption-hover-elementor'),
-            'puffin-caption' => esc_html__('puffin-caption', 'image-caption-hover-elementor'),
-            'puffin-image' => esc_html__('puffin-image', 'image-caption-hover-elementor'),
-            'puffout-caption' => esc_html__('puffout-caption', 'image-caption-hover-elementor'),
-            'puffout-image' => esc_html__('puffout-image', 'image-caption-hover-elementor'),
-            'opendoordown-caption' => esc_html__('opendoordown-caption', 'image-caption-hover-elementor'),
-            'opendoordown-image' => esc_html__('opendoordown-image', 'image-caption-hover-elementor'),
-            'opendoorup-caption' => esc_html__('opendoorup-caption', 'image-caption-hover-elementor'),
-            'opendoorup-image' => esc_html__('opendoorup-image', 'image-caption-hover-elementor'),
-            'opendoorright-caption' => esc_html__('opendoorright-caption', 'image-caption-hover-elementor'),
-            'opendoorright-image' => esc_html__('opendoorright-image', 'image-caption-hover-elementor'),
-            'opendoorleft-caption' => esc_html__('opendoorleft-caption', 'image-caption-hover-elementor'),
-            'opendoorleft-image' => esc_html__('opendoorleft-image', 'image-caption-hover-elementor'),
-            'rotatedown-caption' => esc_html__('rotatedown-caption', 'image-caption-hover-elementor'),
-            'rotatedown-image' => esc_html__('rotatedown-image', 'image-caption-hover-elementor'),
-            'rotateup-caption' => esc_html__('rotateup-caption', 'image-caption-hover-elementor'),
-            'rotateup-image' => esc_html__('rotateup-image', 'image-caption-hover-elementor'),
-            'rotateright-caption' => esc_html__('rotateright-caption', 'image-caption-hover-elementor'),
-            'rotateright-image' => esc_html__('rotateright-image', 'image-caption-hover-elementor'),
-            'rotateleft-caption' => esc_html__('rotateleft-caption', 'image-caption-hover-elementor'),
-            'rotateleft-image' => esc_html__('rotateleft-image', 'image-caption-hover-elementor'),
-            'spaceoutup-caption' => esc_html__('spaceoutup-caption', 'image-caption-hover-elementor'),
-            'spaceoutup-image' => esc_html__('spaceoutup-image', 'image-caption-hover-elementor'),
-            'spaceoutdown-caption' => esc_html__('spaceoutdown-caption', 'image-caption-hover-elementor'),
-            'spaceoutdown-image' => esc_html__('spaceoutdown-image', 'image-caption-hover-elementor'),
-            'spaceoutright-caption' => esc_html__('spaceoutright-caption', 'image-caption-hover-elementor'),
-            'spaceoutright-image' => esc_html__('spaceoutright-image', 'image-caption-hover-elementor'),
-            'spaceoutleft-caption' => esc_html__('spaceoutleft-caption', 'image-caption-hover-elementor'),
-            'spaceoutleft-image' => esc_html__('spaceoutleft-image', 'image-caption-hover-elementor'),
-            'foolish-caption' => esc_html__('foolish-caption', 'image-caption-hover-elementor'),
-            'foolish-image' => esc_html__('foolish-image', 'image-caption-hover-elementor'),
-            'tinright-caption' => esc_html__('tinright-caption', 'image-caption-hover-elementor'),
-            'tinright-image' => esc_html__('tinright-image', 'image-caption-hover-elementor'),
-            'tinleft-caption' => esc_html__('tinleft-caption', 'image-caption-hover-elementor'),
-            'tinleft-image' => esc_html__('tinleft-image', 'image-caption-hover-elementor'),
-            'tinup-caption' => esc_html__('tinup-caption', 'image-caption-hover-elementor'),
-            'tinup-image' => esc_html__('tinup-image', 'image-caption-hover-elementor'),
-            'tindown-caption' => esc_html__('tindown-caption', 'image-caption-hover-elementor'),
-            'tindown-image' => esc_html__('tindown-image', 'image-caption-hover-elementor'),
-            'simple-fade' => esc_html__('simple-fade', 'image-caption-hover-elementor'),
+            'scroll-image-bottom-caption' => esc_html__('Scroll Image Bottom Caption', 'image-caption-hover-elementor'),
+            'scroll-image-top-caption' => esc_html__('Scroll Image Top Caption', 'image-caption-hover-elementor'),
 
-            'zoom-in' => esc_html__('zoom-in', 'image-caption-hover-elementor'),
-            'zoom-out' => esc_html__('zoom-out', 'image-caption-hover-elementor'),
-            'zoom-in-twist' => esc_html__('zoom-in-twist', 'image-caption-hover-elementor'),
-            'zoom-out-twist' => esc_html__('zoom-out-twist', 'image-caption-hover-elementor'),
-            'zoom-caption-in-image-out' => esc_html__('zoom-caption-in-image-out', 'image-caption-hover-elementor'),
-            'zoom-caption-out-image-in' => esc_html__('zoom-caption-out-image-in', 'image-caption-hover-elementor'),
-            'zoom-image-out-caption-twist' => esc_html__('zoom-image-out-caption-twist', 'image-caption-hover-elementor'),
-            'zoom-image-in-caption-twist' => esc_html__('zoom-image-in-caption-twist', 'image-caption-hover-elementor'),
+            'black-dots-overlay' => esc_html__('Black Dots Overlay', 'image-caption-hover-elementor'),
 
-            'flip-image-vertical' => esc_html__('flip-image-vertical', 'image-caption-hover-elementor'),
-            'flip-image-horizontal' => esc_html__('flip-image-horizontal', 'image-caption-hover-elementor'),
-            'flip-image-vertical-back' => esc_html__('flip-image-vertical-back', 'image-caption-hover-elementor'),
-            'flip-image-horizontal-back' => esc_html__('flip-image-horizontal-back', 'image-caption-hover-elementor'),
+            'static-caption-under-image' => esc_html__('Static Caption Under Image', 'image-caption-hover-elementor'),
+            'static-caption-zoom' => esc_html__('Static Caption Zoom', 'image-caption-hover-elementor'),
 
-            'page-turn-from-top' => esc_html__('page-turn-from-top', 'image-caption-hover-elementor'),
-            'page-turn-from-bottom' => esc_html__('page-turn-from-bottom', 'image-caption-hover-elementor'),
-            'page-turn-from-left' => esc_html__('page-turn-from-left', 'image-caption-hover-elementor'),
-            'page-turn-from-right' => esc_html__('page-turn-from-right', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-left' => esc_html__('Break Pieces Vertical Left', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-right' => esc_html__('Break Pieces Vertical Right', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-fly-up' => esc_html__('Break Pieces Vertical Fly Up', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-fly-down' => esc_html__('Break Pieces Vertical Fly Down', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-ascend' => esc_html__('Break Pieces Vertical Ascend', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-descend' => esc_html__('Break Pieces Vertical Descend', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-zoom-in' => esc_html__('Break Pieces Vertical Zoom In', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-zoom-out' => esc_html__('Break Pieces Vertical Zoom Out', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-flush' => esc_html__('Break Pieces Vertical Flush', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-flush-opposite' => esc_html__('Break Pieces Vertical Flush Opposite', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-collapse' => esc_html__('Break Pieces Vertical Collapse', 'image-caption-hover-elementor'),
+            'break-pieces-vertical-drop' => esc_html__('Break Pieces Vertical Drop', 'image-caption-hover-elementor'),
 
-            'no-effect' => esc_html__('no-effect', 'image-caption-hover-elementor'),
-            'no-hover-still-caption' => esc_html__('no-hover-still-caption', 'image-caption-hover-elementor'),
-            'visible-caption-blur-image' => esc_html__('visible-caption-blur-image', 'image-caption-hover-elementor'),
-            'visible-caption-grayscale-image' => esc_html__('visible-caption-grayscale-image', 'image-caption-hover-elementor'),
-
-            'scroll-image-bottom-caption' => esc_html__('scroll-image-bottom-caption', 'image-caption-hover-elementor'),
-            'scroll-image-top-caption' => esc_html__('scroll-image-top-caption', 'image-caption-hover-elementor'),
-
-            'visible-image-title-caption-switch' => esc_html__('visible-image-title-caption-switch', 'image-caption-hover-elementor'),
-
-            'black-dots-overlay' => esc_html__('black-dots-overlay', 'image-caption-hover-elementor'),
-
-            'static-caption-under-image' => esc_html__('static-caption-under-image', 'image-caption-hover-elementor'),
-            'static-caption-zoom' => esc_html__('static-caption-zoom', 'image-caption-hover-elementor'),
-
-            'break-pieces-vertical-left' => esc_html__('break-pieces-vertical-left', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-right' => esc_html__('break-pieces-vertical-right', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-fly-up' => esc_html__('break-pieces-vertical-fly-up', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-fly-down' => esc_html__('break-pieces-vertical-fly-down', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-ascend' => esc_html__('break-pieces-vertical-ascend', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-descend' => esc_html__('break-pieces-vertical-descend', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-zoom-in' => esc_html__('break-pieces-vertical-zoom-in', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-zoom-out' => esc_html__('break-pieces-vertical-zoom-out', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-flush' => esc_html__('break-pieces-vertical-flush', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-flush-opposite' => esc_html__('break-pieces-vertical-flush-opposite', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-collapse' => esc_html__('break-pieces-vertical-collapse', 'image-caption-hover-elementor'),
-            'break-pieces-vertical-drop' => esc_html__('break-pieces-vertical-drop', 'image-caption-hover-elementor'),
-
-            'break-pieces-horizontal-up' => esc_html__('break-pieces-horizontal-up', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-down' => esc_html__('break-pieces-horizontal-down', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-fly-up' => esc_html__('break-pieces-horizontal-fly-up', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-fly-down' => esc_html__('break-pieces-horizontal-fly-down', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-ascend' => esc_html__('break-pieces-horizontal-ascend', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-descend' => esc_html__('break-pieces-horizontal-descend', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-zoom-in' => esc_html__('break-pieces-horizontal-zoom-in', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-zoom-out' => esc_html__('break-pieces-horizontal-zoom-out', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-flush' => esc_html__('break-pieces-horizontal-flush', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-flush-opposite' => esc_html__('break-pieces-horizontal-flush-opposite', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-collapse' => esc_html__('break-pieces-horizontal-collapse', 'image-caption-hover-elementor'),
-            'break-pieces-horizontal-drop' => esc_html__('break-pieces-horizontal-drop', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-up' => esc_html__('Break Pieces Horizontal Up', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-down' => esc_html__('Break Pieces Horizontal Down', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-fly-up' => esc_html__('Break Pieces Horizontal Fly Up', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-fly-down' => esc_html__('Break Pieces Horizontal Fly Down', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-ascend' => esc_html__('Break Pieces Horizontal Ascend', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-descend' => esc_html__('Break Pieces Horizontal Descend', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-zoom-in' => esc_html__('Break Pieces Horizontal Zoom In', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-zoom-out' => esc_html__('Break Pieces Horizontal Zoom Out', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-flush' => esc_html__('Break Pieces Horizontal Flush', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-flush-opposite' => esc_html__('Break Pieces Horizontal Flush Opposite', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-collapse' => esc_html__('Break Pieces Horizontal Collapse', 'image-caption-hover-elementor'),
+            'break-pieces-horizontal-drop' => esc_html__('Break Pieces Horizontal Drop', 'image-caption-hover-elementor'),
         );
     }
+
 
     protected function render() {
         $settings = $this->get_settings_for_display();
 
         $template_style = isset($settings['template_style']) ? $settings['template_style'] : 'caption-slide-up';
+        $overlay_class = isset($settings['overlay']) ? $settings['overlay'] : 'full';
 
         if ( ! empty( $settings['link']['url'] ) ) {
             $this->add_link_attributes( 'link', $settings['link'] );
@@ -415,12 +455,8 @@ class Widget extends Widget_Base {
             $image_url = wp_get_attachment_image_url( $image_id, $size );
         }
 
-        if (strpos($template_style, 'square') !== false || strpos($template_style, 'circle') !== false) {    
-            include CAICHE_PATH.'/templates/ihover.php';
-        } elseif (strpos($template_style, 'break-pieces') !== false) {
+        if (strpos($template_style, 'break-pieces') !== false) {
             include CAICHE_PATH.'/templates/break-pieces.php';
-        } elseif ($template_style == 'visible-image-title-caption-switch') {
-            include CAICHE_PATH.'/templates/visible-image-title-caption-switch.php';
         } elseif ($template_style == 'static-caption-under-image') {
             include CAICHE_PATH.'/templates/static-caption-under-image.php';
         } elseif ($template_style == 'scroll-image-bottom-caption' || $template_style == 'scroll-image-top-caption') {
@@ -429,4 +465,72 @@ class Widget extends Widget_Base {
             include CAICHE_PATH.'/templates/default.php';
         }
     }
+
+    protected function content_template() {
+        ?>
+        <# 
+        var imageUrl = ( settings.image && settings.image.url ) ? settings.image.url : '';
+        var linkUrl = ( settings.link && settings.link.url ) ? settings.link.url : '';
+        var templateStyle = settings.template_style || 'caption-slide-up';
+        #>
+
+        <div class="wcp-caption-plugin" ontouchstart="">
+            <# if ( linkUrl ) { #>
+                <a href="{{ linkUrl }}" class="caiche-image-link">
+            <# } #>
+
+            <# if ( templateStyle.indexOf('break-pieces') !== -1 ) { #>
+                <div class="image-caption-box">
+                    <div class="image-container image-container-disintegrate">
+                        <div class="disintegrate-container {{ templateStyle }}">
+                            <img src="{{ imageUrl }}" alt="">
+                            <img src="{{ imageUrl }}" alt="" class="image-clip-1 wcp-caption-image">
+                            <img src="{{ imageUrl }}" alt="" class="image-clip-2 wcp-caption-image">
+                            <img src="{{ imageUrl }}" alt="" class="image-clip-3 wcp-caption-image">
+                            <img src="{{ imageUrl }}" alt="" class="image-clip-4 wcp-caption-image">
+                            <img src="{{ imageUrl }}" alt="" class="image-clip-5 wcp-caption-image">
+                        </div>
+                        <div class="image-overlay-container caption">
+                            <div class="as-tble">
+                                <div class="centered-text">
+                                    {{{ settings.caption }}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <# } else if ( templateStyle == 'static-caption-under-image' ) { #>
+                <div class="image-caption-box">
+                    <div class="caption {{ templateStyle }} {{settings.overlay}}">
+                        <div class="as-tble"></div>
+                    </div>
+                    <img class="wcp-caption-image" src="{{ imageUrl }}" alt="">
+                </div>
+                {{{ settings.caption }}}
+            <# } else if ( templateStyle == 'scroll-image-bottom-caption' || templateStyle == 'scroll-image-top-caption' ) { #>
+                <div class="image-caption-box ich-scroll-box {{ templateStyle }}">
+                    <div class="caption {{settings.overlay}}">
+                        <div class="as-tble">
+                            {{{ settings.caption }}}
+                        </div>
+                    </div>
+                </div>
+            <# } else { #>
+                <div class="image-caption-box">
+                    <div class="caption {{ templateStyle }} {{settings.overlay}}">
+                        <div class="as-tble">
+                            {{{ settings.caption }}}
+                        </div>
+                    </div>
+                    <img class="wcp-caption-image" src="{{ imageUrl }}" alt="">
+                </div>
+            <# } #>
+
+            <# if ( linkUrl ) { #>
+                </a>
+            <# } #>
+        </div>
+        <?php
+    }
+
 }

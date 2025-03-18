@@ -3,7 +3,7 @@
         <a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
     <?php } ?>
         <div class="image-caption-box">
-            <div class="caption <?php echo esc_attr( $template_style ); ?>">
+            <div class="caption <?php echo esc_attr( $template_style ); ?> <?php echo esc_attr($overlay_class); ?>">
                 <div class="as-tble">
                     <?php echo wp_kses_post($settings['caption']); ?>
                 </div>

@@ -1,32 +1,29 @@
-<div <?php echo esc_attr( $hasAudio ); ?>
-    class="wcp-caption-plugin <?php echo esc_attr( $audioClass ); ?>"
-    ontouchstart=""
-    id="wcp-widget-<?php echo esc_attr( $box_id ).'-'.esc_attr( $key ); ?>">
-        <?php do_action( 'ich_start_link', $box_id, $data ); ?>
+<div class="wcp-caption-plugin" ontouchstart="">
+
+    <?php if ( ! empty( $settings['link']['url'] ) ) { ?>
+        <a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+    <?php } ?>
+
             <div class="image-caption-box">
                 <div class="image-container image-container-disintegrate">
-                    <div class="disintegrate-container <?php echo esc_attr( $hovereffect ); ?>">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>" class="image-clip-1 wcp-caption-image">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>" class="image-clip-2 wcp-caption-image">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>" class="image-clip-3 wcp-caption-image">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>" class="image-clip-4 wcp-caption-image">
-                        <img src="<?php echo esc_attr( $imageurl ); ?>" alt="<?php echo esc_attr( $imagealt ); ?>" class="image-clip-5 wcp-caption-image">
+                    <div class="disintegrate-container <?php echo esc_attr( $template_style ); ?>">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="" class="image-clip-1 wcp-caption-image">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="" class="image-clip-2 wcp-caption-image">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="" class="image-clip-3 wcp-caption-image">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="" class="image-clip-4 wcp-caption-image">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="" class="image-clip-5 wcp-caption-image">
                     </div>
-                    <div class="image-overlay-container caption">
+                    <div class="image-overlay-container caption <?php echo esc_attr($overlay_class); ?>">
                         <div class="as-tble">
-                            <<?php echo esc_attr( $captionwrap ); ?> class="centered-text">
-                                <?php
-                                    if (isset($fgg_settings['caption_shortcodes'])) {
-                                        echo apply_filters('the_content', $captiontext);
-                                    } else {
-                                        echo stripcslashes($captiontext);
-                                    }
-                                 ?>
-                            </<?php echo esc_attr( $captionwrap ); ?>>
+                            <div class="centered-text">
+                                <?php echo wp_kses_post($settings['caption']); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        <?php do_action( 'ich_end_link', $data ); ?>
+    <?php if ( ! empty( $settings['link']['url'] ) ) { ?>
+        </a>
+    <?php } ?>
 </div>

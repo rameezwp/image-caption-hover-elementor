@@ -36,7 +36,7 @@
     transition: all 1s ease-out;
     max-width: 100% !important;
     display: block;
-} 
+}
 
 .wcp-caption-plugin .image-caption-box .caption {  
     background-color: rgba(0,0,0,0.5);  
@@ -51,6 +51,11 @@
     height: 100%;
     width: 100%;
 } 
+
+.wcp-caption-plugin .image-caption-box .caption.full { height: 100%; }
+.wcp-caption-plugin .image-caption-box .caption.bottom { bottom: 0; height: auto; }
+.wcp-caption-plugin .image-caption-box .caption.top { top: 0; height: auto; }
+
 .wcp-caption-plugin .image-caption-box .captionna {  
     pointer-events: none !important;
 } 
@@ -1449,11 +1454,11 @@
 }
 
 .wcp-caption-plugin .image-caption-box:hover .foolish-image ~ img {  
-    opacity: 0 !important;
     -webkit-animation-name: foolishOut;
     animation-name: foolishOut;
     animation-duration: 1s;
     -webkit-animation-duration: 1s;
+    opacity: 0 !important;
 }
 
 /* ----------------------- Image Caption Hover Styles PRO ----------------------- */
@@ -1690,6 +1695,7 @@
     -webkit-transform: scale(0, 0) rotate(0deg);
   }
 }
+
 @keyframes foolishOut {
   0% {
     opacity: 1;
@@ -3041,4 +3047,37 @@
 .image-overlay-container.caption {
     position: absolute;
     top: 0;
+}
+
+.image-caption-box:has(
+    .static-caption-zoom, 
+    .caption-slide-up, 
+    .zoom-image-in-caption-twist, 
+    .zoom-out-twist, 
+    .zoom-caption-out-image-in, 
+    .zoom-out, 
+    .slide-left-to-right, 
+    .slide-right-to-left, 
+    .slide-top-to-bottom, 
+    .slide-bottom-to-top, 
+    .image-turn-around, 
+    .zoom-and-pan, 
+    .move-image-right, 
+    .move-image-left, 
+    .move-image-top, 
+    .move-image-bottom
+) {
+    overflow: hidden;
+}
+
+.ich-scroll-box {
+    display: block;
+    transition: background-position 3s ease-out 0s;
+    -webkit-transition: background-position 3s ease-out 0s;
+    -moz-transition: background-position 3s ease-out 0s;
+    background-color: #ffffff;
+    background-position: center 0;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    overflow: hidden;
 }

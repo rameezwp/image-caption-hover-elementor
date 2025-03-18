@@ -2,11 +2,15 @@
 /**
  * Plugin Name: Image Caption Hover for Elementor
  * Description: An Elementor widget to display images with stylish captions and hover effects.
- * Plugin URI:  https://classicaddons.com/elementor/image-caption-hover-elementor
+ * Plugin URI:  https://classicaddons.com/image-caption-hover-elementor
  * Version:     1.0
  * Author:      Classic Addons
  * Author URI:  https://classicaddons.com/
  * Text Domain: image-caption-hover-elementor
+ * 
+ * Requires Plugins: elementor
+ * Elementor tested up to: 3.20.0
+ * Elementor Pro tested up to: 3.27.6
  */
 
 if (!defined('ABSPATH')) {

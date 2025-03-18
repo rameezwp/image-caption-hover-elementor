@@ -1,15 +1,22 @@
-<div <?php echo esc_attr( $hasAudio ); ?> class="wcp-caption-plugin <?php echo esc_attr( $audioClass ); ?>" ontouchstart="" id="wcp-widget-<?php echo esc_attr( $box_id ).'-'.esc_attr( $key ); ?>">
-    <?php do_action( 'ich_start_link', $box_id, $data ); ?>
+<div class="wcp-caption-plugin" ontouchstart="">
+    <?php if ( ! empty( $settings['link']['url'] ) ) { ?>
+        <a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+    <?php } ?>
+
         <div class="image-caption-box">
-            <div class="caption <?php echo esc_attr( $hovereffect ); ?>">
+            <div class="caption <?php echo esc_attr( $template_style ); ?> <?php echo esc_attr($overlay_class); ?>">
                 <div class="as-tble">
                 </div>
             </div>
             <img class="wcp-caption-image"
-                src="<?php echo esc_attr( $imageurl ); ?>"
-                title="<?php echo esc_attr( $imagetitle ); ?>"
-                alt="<?php echo esc_attr( $imagealt ); ?>"/>
-        </div>                
-        <?php do_action( 'ich_caption_text', $box_id, $data ); ?>
-    <?php do_action( 'ich_end_link', $data ); ?>
+            src="<?php echo esc_url( $image_url ); ?>"
+            title=""
+            alt=""/>
+        </div>
+        
+        <?php echo wp_kses_post($settings['caption']); ?>
+
+        <?php if ( ! empty( $settings['link']['url'] ) ) { ?>
+            </a>
+        <?php } ?>
 </div>
